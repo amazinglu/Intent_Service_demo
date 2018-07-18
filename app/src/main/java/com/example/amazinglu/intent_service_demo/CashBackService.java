@@ -2,6 +2,7 @@ package com.example.amazinglu.intent_service_demo;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.Nullable;
 
 public class CashBackService extends IntentService {
@@ -30,8 +31,9 @@ public class CashBackService extends IntentService {
     }
 
     private void sentCaskbackBack(String cashback) {
-        Intent intent = new Intent();
-        intent.setAction(ACTION_CASHBACK_INFO);
+//        Intent intent = new Intent();
+//        intent.setAction(ACTION_CASHBACK_INFO);
+        Intent intent = new Intent(this, MainActivity.CashBackReceiver.class);
         intent.putExtra(KEY_CASHBACK, cashback);
         sendBroadcast(intent);
     }

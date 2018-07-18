@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        registerCashBackReceiver();
 
         request.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,23 +40,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(cashBackReceiver);
-    }
-
-    private void registerCashBackReceiver() {
-        cashBackReceiver = new CashBackReceiver();
-        /**
-         * the action in the intent filter must the same as the broadcast's implicit intent's action
-         * */
-        IntentFilter cashBackIntentFilter = new IntentFilter();
-        cashBackIntentFilter.addAction(CashBackService.ACTION_CASHBACK_INFO);
-        registerReceiver(cashBackReceiver, cashBackIntentFilter);
-    }
-
-    class CashBackReceiver extends BroadcastReceiver {
+    /**
+     * if we want to register the BroadcastReceiver in manifest, this recevier can not be the inner class of activity
+     * and receiver should have its own life cycle
+     *
+     * 也是可以理解的，在manifest中register就是说在app的任何时间包括activity不存在的时候搜可以随便调用，但是
+     * 如何这个receiver的生命周期和activity是绑在一起的话，这就不可能了
+     *
+     * 所以说在manifest中register的元素都应该保证有自己单独的不受其他控件影响的life cycle
+     *
+     * 所以当BroadcastReceiver 作为 activity的 inner class的时候，用explicit intent 在broadcast 和 BroadcastReceiver
+     * 之间是不行的
+     * */
+    public class CashBackReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             result.setText(intent.getStringExtra(CashBackService.KEY_CASHBACK));

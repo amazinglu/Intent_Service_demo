@@ -19,6 +19,8 @@
 
         <service android:name=".CashBackService"/>
 
+        <receiver android:name=".MainActivity$CashBackReceiver"/>
+
     </application>
 
 </manifest>
