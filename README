@@ -1,0 +1,15 @@
+using intent service the handle background task
+communicate with UI thread using broadcast
+
+intent broadcast -> broadcastReceiver
+
+use implicit intent:
+the intent action of broadcast and broadcastReceiver should be the same
+
+use explicit intent:
+the explicit intent only look for the target by search the name of the class in manifest
+So using explicit intent, the broadcast receiver must be registered in manifest
+
+In order to be able to register in manifest, the broadReceiver must have it own life cycle
+So, if the broadReceiver is the inner class of a activity, can not use explicit intent
+(know more, see branch: master_explicit_intent)
